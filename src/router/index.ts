@@ -1,31 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router";
-import SideMenu from "../layouts/SideMenu/SideMenu.vue";
-import Page1 from "../pages/Page1.vue";
-import Page2 from "../pages/Page2.vue";
-import Page3 from "../pages/Page3.vue";
+
+// I use import.meta.glob to import all the routes from the modules folder.
+// This way I don't have to manually import each route file.
+// I also use eager: true to make sure the routes are loaded before the app is mounted.
+const importedModules: any = import.meta.glob("../modules/**/*.router.ts", {
+  eager: true,
+});
+
+const modules: any[] = [];
+
+Object.keys(importedModules).forEach((key) => {
+  if (importedModules[key]?.default) {
+    if (
+      Array.isArray(importedModules[key].default) &&
+      importedModules[key].default.length
+    ) {
+      modules.push(...importedModules[key].default);
+    }
+  }
+});
 
 const routes = [
   {
     path: "/",
-    component: SideMenu,
-    children: [
-      {
-        path: "/",
-        name: "side-menu-page-1",
-        component: Page1,
-      },
-      {
-        path: "page-2",
-        name: "side-menu-page-2",
-        component: Page2,
-      },
-      {
-        path: "page-3",
-        name: "side-menu-page-3",
-        component: Page3,
-      },
-    ],
+    name: "home",
+    redirect: { name: "dashboard" },
   },
+  ...modules,
 ];
 
 const router = createRouter({

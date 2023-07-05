@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { Icon } from "../base-components/Lucide/Lucide.vue";
+import { LucideIconType } from "@/types/GlobalTypes";
 
 export interface Menu {
-  icon: Icon;
+  icon: LucideIconType;
   title: string;
   pageName?: string;
   subMenu?: Menu[];
@@ -17,19 +17,9 @@ export const useSideMenuStore = defineStore("sideMenu", {
   state: (): SideMenuState => ({
     menu: [
       {
-        icon: "Cookie",
-        pageName: "side-menu-page-1",
-        title: "Page 1",
-      },
-      {
-        icon: "Mail",
-        pageName: "side-menu-page-2",
-        title: "Page 2",
-      },
-      {
-        icon: "User",
-        pageName: "side-menu-page-3",
-        title: "Page 3",
+        icon: "Home",
+        pageName: "dashboard",
+        title: "Главная",
       },
     ],
   }),
