@@ -2,9 +2,6 @@ import { JwtEnum } from "@/utils/useJwt";
 import { http } from "@/utils/axios.config";
 
 class Auth {
-  login(data: {}) {
-    return http.post("auth/login", data);
-  }
   refresh() {
     return http.post("auth/refresh");
   }

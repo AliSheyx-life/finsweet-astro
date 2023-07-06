@@ -21,6 +21,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "dashboard",
         title: "Главная",
       },
+      {
+        icon: "Map",
+        pageName: "branches",
+        title: "Филиалы",
+      },
     ],
   }),
 });
