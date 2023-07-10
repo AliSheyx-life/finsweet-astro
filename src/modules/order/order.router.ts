@@ -2,15 +2,15 @@ import SideMenu from "@/layouts/SideMenu/SideMenu.vue";
 
 export default [
   {
-    path: "/dashboard",
+    path: "/order",
     name: "",
     component: SideMenu,
     children: [
       {
         path: "",
-        name: "dashboard",
+        name: "order",
         // component: () => import("./views/DashboardPage.vue"),
-        component: () => import("./views/DashboardOverview1.vue"),
+        component: () => import("./views/OrderPage.vue"),
       },
     ],
   },

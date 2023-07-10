@@ -1,7 +1,7 @@
 export enum JwtEnum {
   accessToken = "access_token",
   refreshToken = "refresh_token",
-  userData = "user_data",
+  userData = "user_info",
   roles = "roles",
 }
 
@@ -60,7 +60,7 @@ class UseJwt {
   }
 
   setRefreshToken(token: string) {
-    localStorage.setItem(JwtEnum.refreshToken, token);
+    localStorage.setItem(JwtEnum.refreshToken, JSON.stringify(token));
   }
 
   getRefreshToken() {

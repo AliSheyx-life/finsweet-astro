@@ -1,8 +1,9 @@
 import { JwtEnum } from "@/utils/useJwt";
 import { http } from "@/utils/axios.config";
+import { ILogin } from "./types/UserTypes";
 
 class Auth {
-  login(data: {}) {
+  login(data: ILogin) {
     return http.post("auth/login", data);
   }
 }

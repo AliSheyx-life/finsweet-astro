@@ -26,6 +26,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "branches",
         title: "Филиалы",
       },
+      {
+        icon: "FolderPlus",
+        pageName: "order",
+        title: "Завки",
+      },
     ],
   }),
 });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Lucide from "../../base-components/Lucide";
 import logoUrl from "../../assets/images/logo.svg";
 // import Breadcrumb from "../../base-components/Breadcrumb";
@@ -9,12 +9,17 @@ import fakerData from "../../utils/faker";
 import _ from "lodash";
 import { TransitionRoot } from "@headlessui/vue";
 import { useRouter } from "vue-router";
+import useJwt from "@/utils/useJwt";
 
 const props = defineProps<{
   layout?: "side-menu" | "simple-menu" | "top-menu";
 }>();
 
 const router = useRouter();
+
+const getUserInfo = computed(() => {
+  return useJwt.getUserData();
+});
 
 const searchDropdown = ref(false);
 const showSearchDropdown = () => {
@@ -61,36 +66,38 @@ const hideSearchDropdown = () => {
       <Menu class="ml-auto flex items-center">
         <Menu.Button class="block text-right zoom-in intro-x mr-2">
           <div class="font-medium text-white/70 dark:text-slate-500">
-            {{ fakerData[0].users[0].name }}
+            {{ getUserInfo?.login }}
           </div>
           <div class="text-xs text-white/70 dark:text-slate-500">
-            {{ fakerData[0].jobs[0] }}
+            {{ getUserInfo?.role }}
           </div>
         </Menu.Button>
         <Menu.Button
-          class="block w-8 h-8 overflow-hidden rounded-full shadow-lg image-fit zoom-in intro-x"
+          class="w-8 h-8 overflow-hidden rounded-full shadow-lg image-fit zoom-in intro-x flex items-center justify-center border border-white"
         >
           <img
-            alt="Midone Tailwind HTML Admin Template"
-            :src="fakerData[9].photos[0]"
+            :alt="getUserInfo?.login"
+            :src="getUserInfo?.photo"
+            v-if="getUserInfo?.photo"
           />
+          <Lucide icon="User" class="text-white" v-else />
         </Menu.Button>
         <Menu.Items
           class="w-56 mt-px relative bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white"
         >
           <Menu.Header class="font-normal">
-            <div class="font-medium">{{ fakerData[0].users[0].name }}</div>
+            <div class="font-medium">{{ getUserInfo?.login }}</div>
             <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">
-              {{ fakerData[0].jobs[0] }}
+              {{ getUserInfo?.role }}
             </div>
           </Menu.Header>
           <Menu.Divider class="bg-white/[0.08]" />
           <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="Edit" class="w-4 h-4 mr-2" /> Add Account
+            <Lucide icon="Edit" class="w-4 h-4 mr-2" /> Редактировать профиль
           </Menu.Item>
           <Menu.Divider class="bg-white/[0.08]" />
           <Menu.Item class="hover:bg-white/5">
-            <Lucide icon="ToggleRight" class="w-4 h-4 mr-2" /> Logout
+            <Lucide icon="LogOut" class="w-4 h-4 mr-2" /> Выйти
           </Menu.Item>
         </Menu.Items>
       </Menu>
