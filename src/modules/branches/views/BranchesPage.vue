@@ -1,8 +1,17 @@
 <script setup lang="ts">
-// import LeafletMap from "@/components/LeafletMap";
+import { onMounted } from "vue";
 import BranchesTable from "../components/BranchesTable";
 import CompaniesList from "../components/CompaniesList";
 import PartnersList from "../components/PartnersList";
+import { useBranchesStore } from "../store/branches.store";
+
+const branchesStore = useBranchesStore();
+
+onMounted(() => {
+  branchesStore.fetchAllBranches();
+  branchesStore.fetchAllCompanies();
+  branchesStore.fetchAllPartners();
+});
 </script>
 
 <template>
@@ -13,7 +22,7 @@ import PartnersList from "../components/PartnersList";
         <BranchesTable />
       </div>
       <div class="p-5 w-1/4">
-        <CompaniesList />
+        <CompaniesList :companies="branchesStore.companies" @created="branchesStore.fetchAllCompanies();" />
       </div>
       <div class="p-5 w-1/4">
         <PartnersList />

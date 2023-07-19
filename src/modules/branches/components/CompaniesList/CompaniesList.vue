@@ -1,12 +1,35 @@
 <script setup lang="ts">
 import Button from "@/base-components/Button";
 import Lucide from "@/base-components/Lucide";
-import Table from "@/base-components/Table";
 import Dialog from "@/base-components/Headless/Dialog";
 import CreateCompany from "../CreateCompany";
-import { ref } from "vue";
+import TheTable from "@/components/TheTable";
+import type { Header } from "vue3-easy-data-table";
+import { PropType, ref } from "vue";
+import { ICompany } from "../../types/Companies";
+
+const emit = defineEmits<{
+  (event: "created"): void;
+}>();
+
+const props = defineProps({
+  companies: {
+    type: Array as PropType<ICompany[]>,
+    required: true,
+  },
+});
 
 const create = ref(false);
+const companyToEdit = ref<ICompany | null>(null);
+const headers: Header[] = [
+  { text: 'Имя компании', value: 'name' },
+  { text: 'Действия', value: 'actions' },
+]
+
+const setEditCompany = (company: ICompany) => {
+  companyToEdit.value = company;
+  create.value = true;
+}
 </script>
 
 <template>
@@ -14,44 +37,30 @@ const create = ref(false);
     <div class="flex flex-col items-center intro-y sm:flex-row w-full mb-5">
       <div class="flex justify-between items-center w-full">
         <h2 class="text-xl font-medium mr-auto">Компании</h2>
-        <Button variant="primary" class="shadow-md" @click="create = true">
+        <Button variant="primary" class="shadow-md" @click="create = true, companyToEdit = null">
           Добавить компанию
         </Button>
       </div>
     </div>
 
-    <div class="overflow-x-auto p-5 box">
-      <Table>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th class="whitespace-nowrap text-center">Имя</Table.Th>
-            <Table.Th class="whitespace-nowrap text-center">Действия</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          <!--  -->
-          <Table.Tr>
-            <Table.Td class="whitespace-nowrap text-center"> Jet </Table.Td>
-            <Table.Td class="whitespace-nowrap text-center">
-              <div class="flex justify-center items-center">
-                <Button variant="primary" class="mr-2 shadow-md text-xs">
-                  <Lucide icon="Pencil" size="14px" />
-                </Button>
-                <Button variant="danger" class="shadow-md text-xs">
-                  <Lucide icon="Trash" size="14px" />
-                </Button>
-              </div>
-            </Table.Td>
-          </Table.Tr>
-          <!--  -->
-        </Table.Tbody>
-      </Table>
+    <div class="overflow-x-auto box">
+      <TheTable :headers="headers" :items="companies">
+        <template #item-actions="company">
+          <div class="flex justify-center items-center">
+            <Button variant="primary" @click="setEditCompany(company)">
+              <Lucide icon="Pencil" size="14px" />
+            </Button>
+          </div>
+        </template>
+      </TheTable>
     </div>
     <!--  -->
     <Dialog :open="create" @close="create = false">
       <Dialog.Panel class="p-5">
-        <CreateCompany />
+        <CreateCompany @created="emit('created'), companyToEdit = null" @close="create = false, companyToEdit = null"
+          :companyToEdit="companyToEdit" />
       </Dialog.Panel>
     </Dialog>
+    <!--  -->
   </div>
 </template>
