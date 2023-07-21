@@ -6,6 +6,7 @@ import { AxiosPromise } from "axios";
 export const useUsersStore = defineStore('useUsersStore', {
     state: () => ({
         users: [] as any[],
+        userRoles: [] as string[],
     }),
     getters: {},
     actions: {
@@ -20,6 +21,10 @@ export const useUsersStore = defineStore('useUsersStore', {
         async updateUser(user: IUser): Promise<AxiosPromise<IUser>> {
             const {data} = await usersApi.updateUser(user);
             return data;
+        },
+        async fetchUserRoles() {
+            const {data} = await usersApi.getUserRoles();
+            this.userRoles = data;
         }
     },
 })

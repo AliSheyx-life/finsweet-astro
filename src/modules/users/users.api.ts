@@ -11,6 +11,9 @@ class UsersApi {
     async updateUser(user: IUser) {
         return await http.put(`/user/${user.id}`, user);
     }
+    async getUserRoles() {
+        return await http.get("/user/roles");
+    }
 }
 
 const usersApi = new UsersApi();
